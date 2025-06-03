@@ -1,0 +1,67 @@
+3) find-s algorithm:
+
+
+description:
+
+The read_training_data() function reads the training data from the CSV file using the csv 
+module in Python. The find_s_algorithm() function implements the FIND-S algorithm, which finds 
+the most specific hypothesis based on the training data. The demonstrate_find_s_algorithm() 
+function demonstrates the FIND-S algorithm by printing the training data and the most specific 
+hypothesis. You can replace 'training_data.csv' with the actual name of your CSV file. The 
+assumption is that the last column in the CSV file represents the class label, and 'Yes' denotes 
+positive examples. The algorithm iterates through the training data and updates the specific 
+hypothesis based on positive examples. The most specific hypothesis is printed at the end. Note that 
+this implementation assumes binary attributes and does not handle missing values or continuous 
+attributes. You may need to modify the code accordingly based on your specific requirements.  
+
+implementation:
+
+import csv 
+ 
+# Read the training data from CSV file 
+def read_training_data(file_name): 
+    data = [] 
+    with open(file_name, 'r') as file: 
+        csv_reader = csv.reader(file) 
+        for row in csv_reader: 
+            data.append(row) 
+    return data 
+ 
+# Implement FIND-S algorithm 
+def find_s_algorithm(training_data): 
+ specific_hypothesis = ['0'] * (len(training_data[0]) - 1) 
+    for row in training_data: 
+        if row[-1] == 'Yes': # positive example 
+            for i in range(len(row) - 1): 
+                if specific_hypothesis[i] == '0': 
+                    specific_hypothesis[i] = row[i] 
+                elif specific_hypothesis[i] != row[i]: 
+                    specific_hypothesis[i] = '?' 
+    return specific_hypothesis 
+ 
+# Demonstrate FIND-S algorithm 
+def demonstrate_find_s_algorithm(training_data): 
+    print("Training Data:") 
+    for row in training_data: 
+        print(row) 
+    print("\nMost Specific Hypothesis:") 
+    specific_hypothesis = find_s_algorithm(training_data) 
+    print(specific_hypothesis) 
+ 
+# Driver code 
+if __name__ == "__main__": 
+    # Replace 'training_data.csv' with the actual name of your CSV file 
+    training_data = read_training_data('training_data.csv') 
+    demonstrate_find_s_algorithm(training_data) 
+
+output:
+
+Training Data 
+['Attribute 1','Attribute 2','Attribute 3','Target']
+['sunny','Hot','Low','No']
+['Sunny','Hot','High','Yes',"1"]
+['overcast','Hot','High','Yes']
+['Rainy','mib 1','low','no']
+
+Most specific Hypothesis
+['0','0','0','0','0']
