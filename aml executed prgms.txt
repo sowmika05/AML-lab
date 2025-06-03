@@ -1,0 +1,110 @@
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.metrics import accuracy_score 
+from sklearn.model_selection import train_test_split 
+from sklearn.datasets import load_iris 
+ 
+# Load the iris dataset 
+iris = load_iris() 
+ 
+# Split the dataset into training and testing sets 
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, 
+random_state=42) 
+ 
+# Create a KNeighborsClassifier object with k=3 
+k = 3 
+knn = KNeighborsClassifier(n_neighbors=k) 
+ 
+# Fit the model to the training data 
+knn.fit(X_train, y_train) 
+# Make predictions on the testing data 
+y_pred = knn.predict(X_test) 
+ 
+# Calculate accuracy 
+accuracy = accuracy_score(y_test, y_pred) 
+print("Accuracy:", accuracy)
+
+output: Accuracy :1.0
+
+5)
+ource Code: 
+import numpy as np 
+from sklearn.cluster import KMeans 
+ 
+# Given data specifying classifications for nine combinations of VAR1 and VAR2 
+data = np.array([[1.713, 1.586, 0], 
+                 [0.180, 1.786, 1], 
+                 [0.353, 1.240, 1], 
+                 [0.940, 1.566, 0], 
+                 [1.486, 0.759, 1], 
+                 [1.266, 1.106, 0], 
+                 [1.540, 0.419, 1], 
+                 [0.459, 1.799, 1], 
+                 [0.773, 0.186, 1]]) 
+ 
+# Preprocessing data - not required in this case as data is already given 
+ 
+# Perform k-means clustering with 3 means 
+kmeans = KMeans(n_clusters=3, random_state=0) 
+kmeans.fit(data[:, :2])  # Use only the first two columns (VAR1 and VAR2) for clustering 
+ 
+# Predict for a new case with VAR1=0.906 and VAR2=0.606 
+new_case = np.array([[0.906, 0.606]]) 
+predicted_cluster = kmeans.predict(new_case) 
+ 
+# Determine the classification based on the predicted cluster 
+if predicted_cluster == 0: 
+    classification = "Class 1" 
+elif predicted_cluster == 1: 
+    classification = "Class 2" 
+else: 
+    classification = "Class 3" 
+ 
+print("Predicted classification for VAR1=0.906 and VAR2=0.606: ", classification)
+
+output: predicted classification for VAR 1 = 0.906 and VAR 2=0.606 class.
+
+
+9)
+
+import numpy as np 
+import matplotlib.pyplot as plt 
+ 
+# Generate synthetic data 
+np.random.seed(0) 
+X = np.sort(5 * np.random.rand(80, 1), axis=0) 
+y = np.sin(X).ravel() 
+y += 0.5 * (np.random.rand(80) - 0.5) 
+ 
+# LWR algorithm 
+def locally_weighted_regression(X, y, x, tau): 
+    m, n = X.shape 
+    X_ = np.hstack((np.ones((m, 1)), X))  # add bias term 
+    x_ = np.array([[1, x]]) 
+ 
+    # Calculate weights 
+    weights = np.exp(-np.sum((X_ - x_)**2, axis=1) / (2 * tau**2)) 
+    W = np.diag(weights) 
+ 
+    # Calculate theta using normal equation 
+    theta = np.linalg.inv(X_.T.dot(W).dot(X_)).dot(X_.T).dot(W).dot(y) 
+ 
+    # Predict y_hat 
+    y_hat = x_.dot(theta) 
+    return y_hat 
+ 
+# Fit data using LWR 
+tau = 0.3  # bandwidth parameter 
+X_test = np.linspace(0, 5, 100) 
+y_test = [] 
+for x in X_test: 
+    y_hat = locally_weighted_regression(X, y, x, tau) 
+    y_test.append(y_hat) 
+ 
+# Plot the results 
+plt.scatter(X, y, color='blue', label='Data points') 
+plt.plot(X_test, y_test, color='red', label='LWR') 
+plt.xlabel('X') 
+plt.ylabel('y') 
+plt.title('Locally Weighted Regression') 
+plt.legend() 
+plt.show()
