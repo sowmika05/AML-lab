@@ -1,0 +1,39 @@
+1) knn
+
+description:
+We load the famous Iris dataset from scikit-learn using the load_iris() function. We then split 
+the dataset into training and testing sets using the train_test_split() function. Next, we create a 
+K Neighbors Classifier object with k set to 3, and fit the model to the training data using the 
+fit() method. We make predictions on the testing data using the predict() method, and calculate 
+the accuracy of the model using the accuracy_score() function from scikit-learn. Note that the 
+Iris dataset is a well-known dataset for multi-class classification, where the goal is to classify 
+iris flowers into one of three species based on four features (sepal length, sepal width, petal 
+length, petal width).
+
+implementation:
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.metrics import accuracy_score 
+from sklearn.model_selection import train_test_split 
+from sklearn.datasets import load_iris 
+ 
+# Load the iris dataset 
+iris = load_iris() 
+ 
+# Split the dataset into training and testing sets 
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, 
+random_state=42) 
+ 
+# Create a KNeighborsClassifier object with k=3 
+k = 3 
+knn = KNeighborsClassifier(n_neighbors=k) 
+ 
+# Fit the model to the training data 
+knn.fit(X_train, y_train) 
+# Make predictions on the testing data 
+y_pred = knn.predict(X_test) 
+ 
+# Calculate accuracy 
+accuracy = accuracy_score(y_test, y_pred) 
+print("Accuracy:", accuracy)
+
+output: Accuracy :1.0
