@@ -1,0 +1,37 @@
+2) Extract the data from data base using python
+
+
+
+description:
+Connect to the SQLite database using the connect() function and create a cursor object to 
+interact with the database. We then execute a query using the execute() method and fetch all the 
+rows using the fetchall() method. Finally, we loop through the fetched rows and print them. 
+Don't forget to close the database connection using the close() method after you're done with it. 
+Note that you need to replace 'example.db' with the actual name of your database file, and 
+'my_table' with the actual name of the table from which you want to fetch data. Also, you may 
+need to modify the query according to your specific requirements. Other database libraries such 
+as MySQLdb, psycopg2, or pymongo may have slightly different syntax and usage, so you 
+would need to refer to their respective documentation.
+
+implementation:
+
+import sqlite3 
+ 
+# Connect to the database 
+conn = sqlite3.connect('example.db') 
+cursor = conn.cursor() 
+ 
+# Execute a query to retrieve data 
+cursor.execute('SELECT * FROM example_table') 
+rows = cursor.fetchall()  # Fetch all rows returned by the query 
+ 
+# Process the retrieved data 
+for row in rows: 
+    print(row)  # You can access the columns in the row using row[0], row[1], etc. 
+ 
+# Close the database connection 
+conn.close()
+
+output:
+(1,'Alice',30)
+(2,'Bob',25)
